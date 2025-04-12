@@ -10,7 +10,9 @@ public class TunnelScript : MonoBehaviour
     private Color originalColor;
     public GameObject player;
     public GameObject tunnelOpening; 
+    public Caught caught;
     public bool isTouchingTunnel;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,7 @@ public class TunnelScript : MonoBehaviour
         if (isTouchingTunnel && Input.GetKeyDown(KeyCode.S)){
             Debug.Log("Tunnelling");
             StartCoroutine(Telaport());
+            caught.hidden = true;
         }
     }
 
@@ -42,11 +45,13 @@ public class TunnelScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             isTouchingTunnel = false;
+            caught.hidden = true;
         }
     }
 
     IEnumerator Telaport(){
         //fade out
+        caught.hidden = false;
         yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
 
         //teleport time
@@ -57,6 +62,7 @@ public class TunnelScript : MonoBehaviour
 
         //fade in
         yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
+        
     }
 
     IEnumerator Fade(float startAlpha, float endAlpha, float duration)
@@ -73,6 +79,8 @@ public class TunnelScript : MonoBehaviour
         }
 
         spriteRenderer.color = new Color(color.r, color.g, color.b, endAlpha);
+
+        
     }
 
 }
