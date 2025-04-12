@@ -27,6 +27,14 @@ public class Caught : MonoBehaviour
         }
     }
 
+    public void OnTriggerStay2D(Collider2D collider){
+        if(collider.gameObject.CompareTag("Player")){
+            if(!hidden){
+            gameOver();
+            }
+        }
+    }
+
     public void gameOver(){
         player.transform.position = spawnPoint.transform.position;
         Debug.Log("You have been Re-educated");

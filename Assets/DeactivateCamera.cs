@@ -29,12 +29,9 @@ public class DeactivateCamera : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D collision){
         if(collision.gameObject.CompareTag("Player")){
-            Debug.Log("Inside");
             if(Input.GetKey(KeyCode.E)){
-                Debug.Log("pressed");
                 if(rotate != null){
                     rotate.rotationSpeed = 0;
-                    Debug.Log("stopped");
                 }
                 if(leftSideRotate != null){
                     leftSideRotate.rotationSpeed = 0;
