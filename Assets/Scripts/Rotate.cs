@@ -13,9 +13,10 @@ public bool right;
 public int delay;
 public float smallAngle = 20.75f;
 public float bigAngle = 65f;
+float middleAngle;
 
     void Start(){
-
+        middleAngle = (smallAngle + bigAngle) / 2;
     }
     void Update()
     {   
@@ -32,7 +33,7 @@ public float bigAngle = 65f;
         }
         if (left && right){
             transform.Rotate(0,0,-rotationSpeed * Time.deltaTime, space);
-            if (Eyes.transform.localEulerAngles.z < 33f){
+            if (Eyes.transform.localEulerAngles.z < middleAngle){
                 left = false;
                 right = false;
             }
