@@ -19,7 +19,7 @@ public class CrouchBehind : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D collider){
         if(collider.gameObject.CompareTag("Player")){
-            if(Input.GetKey(KeyCode.LeftControl)){
+            if(Input.GetKey(KeyCode.S)){
             player.hidden = true;
             }
             if(Input.GetKey(KeyCode.W) ||  Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)){
