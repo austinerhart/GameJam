@@ -1,13 +1,19 @@
 using UnityEngine;
 using System.Collections;
+using System.Runtime.InteropServices;
 
 public class Hidden : MonoBehaviour
 {
-    public Caught player;
+    public Caught vision;
+    public GameObject player;
+    Renderer render;
+    public int newLayer;
+    public int oldLayer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        player = GameObject.Find("Player");
+        render = player.GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -18,13 +24,15 @@ public class Hidden : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D collider){
         if(collider.gameObject.CompareTag("Player")){
-            player.hidden = true;
+            render.sortingOrder = newLayer;
+            vision.hidden = true;
         }
     }
 
     public void OnTriggerExit2D(Collider2D collider){
         if(collider.gameObject.CompareTag("Player")){
-            player.hidden = false;
+            render.sortingOrder = oldLayer;
+            vision.hidden = false;
         }
     }
 }
