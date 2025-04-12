@@ -314,7 +314,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -931,10 +931,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c8a07d47fa593479575df5a661eb24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1821740594}
+  player: {fileID: 1821740589}
+  player_rb: {fileID: 1821740594}
   player_collider: {fileID: 1821740595}
   move_speed: 8
   jump_height: 6
+  climb_speed: 3
   hang_time: 0.12
   jump_buffer_length: 0.07
   groundLayer:

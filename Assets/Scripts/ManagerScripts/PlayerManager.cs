@@ -6,28 +6,41 @@ using UnityEngine.InputSystem;
 public class PlayerManager : MonoBehaviour
 {
     [Header("Player Settings")]
-    [SerializeField] private Rigidbody2D player;
+    [SerializeField] private GameObject player;
+    [SerializeField] private Rigidbody2D player_rb;
     [SerializeField] private BoxCollider2D player_collider;
+
+    [Header("Speed Settings")]
     [SerializeField] private float move_speed = 10f;
     [SerializeField] private float jump_height = 8f;
     [SerializeField] private float climb_speed = 3f;
     [SerializeField] private float hang_time = 0.12f;
     [SerializeField] private float jump_buffer_length = 0.07f;
-    [SerializeField] private PlayerInput PlayerController;
+
+    [Header("Layers")]
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask ladderLayer;
 
     // Private Variables
+    private PlayerInput PlayerController;
     private Vector2 direction = Vector2.zero;
     private InputAction movement;
     private InputAction jump;
     private float hang_counter;
     private float jump_buffer_counter;
+    private float player_scale_x;
+    private float player_scale_y;
+    private float player_scale_z;
+    private float player_crouch_y;
 
     private void Awake()
     {
 
-        player.freezeRotation = true;
+        player_scale_x = player.transform.localScale.x;
+        player_scale_y = player.transform.localScale.y;
+        player_scale_z = player.transform.localScale.z;
+        player_crouch_y = player.transform.localScale.y*0.5f;
+        player_rb.freezeRotation = true;
         PlayerController = new PlayerInput();
     }
 
@@ -65,9 +78,9 @@ public class PlayerManager : MonoBehaviour
             jump_buffer_counter -= Time.deltaTime;
         }
 
-        if (jump.WasReleasedThisFrame() && player.velocity.y > 0)
+        if (jump.WasReleasedThisFrame() && player_rb.velocity.y > 0)
         {
-            player.velocity = new Vector2(player.velocity.x, player.velocity.y * 0.5f);
+            player_rb.velocity = new Vector2(player_rb.velocity.x, player_rb.velocity.y * 0.5f);
         }
     }
 
@@ -75,17 +88,17 @@ public class PlayerManager : MonoBehaviour
     {
         Vector2 local_direction = movement.ReadValue<Vector2>();
         float dir_x = 0;
-        float dir_y = player.velocity.y;
+        float dir_y = player_rb.velocity.y;
 
         if (IsOnLadder())
         {
             dir_y = local_direction.y * climb_speed;
             dir_x = local_direction.x * climb_speed;
 
-            player.gravityScale = 0f;
+            player_rb.gravityScale = 0f;
         } else
         {
-            player.gravityScale = 5f;
+            player_rb.gravityScale = 5f;
         }
 
         if (local_direction.y > 0 && hang_counter > 0f && jump_buffer_counter >= 0)
@@ -123,7 +136,20 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        player.velocity = new Vector2(dir_x, dir_y);
+        if(local_direction.y < 0)
+        {
+            if (!IsOnLadder() && IsGrounded())
+            {
+                dir_x = 0;
+                dir_y = 0;
+                player.transform.localScale = new Vector3(player_scale_x, player_crouch_y, player_scale_z);
+            }
+        } else
+        {
+            player.transform.localScale = new Vector3(player_scale_x, player_scale_y, player_scale_z);
+        }
+
+            player_rb.velocity = new Vector2(dir_x, dir_y);
     }
 
     private bool IsGrounded()
@@ -167,7 +193,4 @@ public class PlayerManager : MonoBehaviour
         bool ladder_hit = ladder_left_hit.collider != null || ladder_right_hit.collider != null;
         return ladder_hit;
     }
-
-
-
 }
