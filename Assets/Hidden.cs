@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Hidden : MonoBehaviour
 {
-    public Caught vision;
+    public Caught player;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,15 +16,15 @@ public class Hidden : MonoBehaviour
         
     }
 
-    public void OnTriggerEnter2D(Collider2D collider){
+    public void OnTriggerStay2D(Collider2D collider){
         if(collider.gameObject.CompareTag("Player")){
-        vision.hidden = true;
+            player.hidden = true;
         }
     }
 
     public void OnTriggerExit2D(Collider2D collider){
         if(collider.gameObject.CompareTag("Player")){
-            vision.hidden = false;
+            player.hidden = false;
         }
     }
 }
