@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DeactivateCamera : MonoBehaviour
 {
-    public GameObject Cam;
+    public GameObject vision;
     public Rotate rotate;
     public LeftSideRotate leftSideRotate;
     public float savedSpeed;
@@ -36,7 +36,7 @@ public class DeactivateCamera : MonoBehaviour
                 if(leftSideRotate != null){
                     leftSideRotate.rotationSpeed = 0;
                 }
-                Cam.SetActive(false);
+                vision.SetActive(false);
                 StartCoroutine(Delay());
             }
         }
@@ -50,6 +50,6 @@ public class DeactivateCamera : MonoBehaviour
                 if(leftSideRotate != null){
                     leftSideRotate.rotationSpeed = savedSpeed;
                 }
-                Cam.SetActive(true);
+                vision.SetActive(true);
     }
 }
