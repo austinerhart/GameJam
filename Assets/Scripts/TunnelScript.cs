@@ -45,7 +45,7 @@ public class TunnelScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             isTouchingTunnel = false;
-            caught.hidden = true;
+            //caught.hidden = true;
         }
     }
 

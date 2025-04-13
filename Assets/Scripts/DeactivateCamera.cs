@@ -45,7 +45,6 @@ public class DeactivateCamera : MonoBehaviour
     }
 
     public IEnumerator Delay(){
-        yield return new WaitForSeconds(0.5f);
         GameObject camera = vision.transform.parent.gameObject;
         if(camera.GetComponent<AudioSource>())
             camera.GetComponent<AudioSource>().Play();
