@@ -1127,6 +1127,14 @@ MonoBehaviour:
   ladderLayer:
     serializedVersion: 2
     m_Bits: 128
+  footstepSounds:
+  - {fileID: 8300000, guid: f6162527cd8267c4ab730438d08c4978, type: 3}
+  climbingSounds:
+  - {fileID: 8300000, guid: f8557fbd437a3f448ab39df552bd087e, type: 3}
+  footstepInterval: 0.3
+  climbingInterval: 0.4
+  footstepVolume: 0.6
+  climbingVolume: 0.5
 --- !u!1 &1130668088
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,6 +24,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask ladderLayer;
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip[] footstepSounds;
+    [SerializeField] private AudioClip[] climbingSounds;
+    [SerializeField] private float footstepInterval = 0.3f;
+    [SerializeField] private float climbingInterval = 0.4f;
+    [SerializeField] private float footstepVolume = 0f;
+    [SerializeField] private float climbingVolume = 0f;
+
     // Private Variables
     private PlayerInput PlayerController;
     private Vector2 direction = Vector2.zero;
@@ -35,13 +43,20 @@ public class PlayerManager : MonoBehaviour
     private float player_scale_y;
     private float player_scale_z;
     private float player_crouch_y;
-    private bool sound_is_playing = false;
     private float player_crouch_offset;
     private bool isCrouching;
 
+    // Sound variables
+    private float lastFootstepTime;
+    private float lastClimbingTime;
+    private bool isClimbing = false;
+    private bool footstepSoundPlaying = false;
+    private bool climbingSoundPlaying = false;
+    private AudioSource currentFootstepSource;
+    private AudioSource currentClimbingSource;
+
     private void Awake()
     {
-
         player_scale_x = player_collider.size.x;
         player_scale_y = player_collider.size.y;
         player_crouch_y = 0.3737239f;
@@ -66,9 +81,10 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
-        player_animator.SetBool("isClimbing", IsOnLadder());
+        bool onLadder = IsOnLadder();
+        player_animator.SetBool("isClimbing", onLadder);
         player_animator.SetBool("isCrouching", isCrouching);
-        player_animator.SetBool("isJumping", (!IsGrounded() && !IsOnLadder()));
+        player_animator.SetBool("isJumping", (!IsGrounded() && !onLadder));
         player_animator.SetFloat("xVelocity", Math.Abs(player_rb.velocity.x));
         player_animator.SetFloat("yVelocity", player_rb.velocity.y);
 
@@ -77,15 +93,46 @@ public class PlayerManager : MonoBehaviour
         if (IsGrounded())
         {
             hang_counter = hang_time;
-        } else
+
+            if (Math.Abs(player_rb.velocity.x) > 0.5f && !isCrouching)
+            {
+                if (Time.time >= lastFootstepTime + footstepInterval)
+                {
+                    PlayFootstepSound();
+                    lastFootstepTime = Time.time;
+                }
+            }
+            else
+            {
+                StopFootstepSound();
+            }
+        }
+        else
         {
             hang_counter -= Time.deltaTime;
+            StopFootstepSound();
+        }
+
+        if (onLadder && Math.Abs(player_rb.velocity.y) > 0.1f)
+        {
+            isClimbing = true;
+            if (Time.time >= lastClimbingTime + climbingInterval)
+            {
+                PlayClimbingSound();
+                lastClimbingTime = Time.time;
+            }
+        }
+        else
+        {
+            isClimbing = false;
+            StopClimbingSound();
         }
 
         if (jump.WasPressedThisFrame())
         {
             jump_buffer_counter = jump_buffer_length;
-        } else
+        }
+        else
         {
             jump_buffer_counter -= Time.deltaTime;
         }
@@ -104,22 +151,13 @@ public class PlayerManager : MonoBehaviour
 
         if (IsOnLadder())
         {
-            if (!sound_is_playing){
-                if (GetComponent<AudioSource>()){
-                    GetComponent<AudioSource>().Play();
-                }
-            }
             dir_y = local_direction.y * climb_speed;
             dir_x = local_direction.x * climb_speed;
 
             player_rb.gravityScale = 0f;
-        } else
+        }
+        else
         {
-            if (sound_is_playing){
-                if (GetComponent<AudioSource>()){
-                    GetComponent<AudioSource>().Stop();
-                }
-            }
             player_rb.gravityScale = 5f;
         }
 
@@ -132,11 +170,11 @@ public class PlayerManager : MonoBehaviour
 
         if (local_direction.x != 0)
         {
-
-            if(local_direction.x < 0)
+            if (local_direction.x < 0)
             {
                 player_sprite.flipX = true;
-            } else
+            }
+            else
             {
                 player_sprite.flipX = false;
             }
@@ -146,10 +184,11 @@ public class PlayerManager : MonoBehaviour
 
         if (IsWallLeft())
         {
-            if(local_direction.x < 0)
+            if (local_direction.x < 0)
             {
                 dir_x = 0;
-            } else
+            }
+            else
             {
                 dir_x = local_direction.x * move_speed;
             }
@@ -167,7 +206,7 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        if(local_direction.y < 0)
+        if (local_direction.y < 0)
         {
             if (!IsOnLadder() && IsGrounded())
             {
@@ -177,7 +216,8 @@ public class PlayerManager : MonoBehaviour
                 player_collider.size = new Vector2(player_scale_x, player_crouch_y);
                 player_collider.offset = new Vector2(0.02f, player_crouch_offset);
             }
-        } else
+        }
+        else
         {
             isCrouching = false;
             player_collider.size = new Vector2(player_scale_x, player_scale_y);
@@ -231,5 +271,71 @@ public class PlayerManager : MonoBehaviour
 
     public void PlayFootstepSound()
     {
+        if (footstepSounds.Length > 0 && IsGrounded() && !footstepSoundPlaying)
+        {
+            footstepSoundPlaying = true;
+
+            float randomPitch = UnityEngine.Random.Range(0.9f, 1.1f);
+
+            AudioClip selectedClip = footstepSounds[UnityEngine.Random.Range(0, footstepSounds.Length)];
+
+            AudioSource audioSource = SoundFXManager.Instance.CreateAudioSource(selectedClip, transform, footstepVolume, randomPitch);
+            currentFootstepSource = audioSource;
+
+            ResetFootstepFlag(selectedClip.length);
+        }
+    }
+
+    public void StopFootstepSound()
+    {
+        if (currentFootstepSource != null)
+        {
+            Destroy(currentFootstepSource.gameObject);
+            currentFootstepSource = null;
+            footstepSoundPlaying = false;
+            StopCoroutine("ResetFootstepFlag");
+        }
+    }
+
+    private IEnumerator ResetFootstepFlag(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        footstepSoundPlaying = false;
+        currentFootstepSource = null;
+    }
+
+    public void PlayClimbingSound()
+    {
+        if (climbingSounds.Length > 0 && isClimbing && !climbingSoundPlaying)
+        {
+            climbingSoundPlaying = true;
+
+            float randomPitch = UnityEngine.Random.Range(0.95f, 1.05f);
+
+            AudioClip selectedClip = climbingSounds[UnityEngine.Random.Range(0, climbingSounds.Length)];
+
+            AudioSource audioSource = SoundFXManager.Instance.CreateAudioSource(selectedClip, transform, climbingVolume, randomPitch);
+            currentClimbingSource = audioSource;
+
+            ResetClimbingFlag(selectedClip.length);
+        }
+    }
+
+    public void StopClimbingSound()
+    {
+        if (currentClimbingSource != null)
+        {
+            Destroy(currentClimbingSource.gameObject);
+            currentClimbingSource = null;
+            climbingSoundPlaying = false;
+            StopCoroutine("ResetClimbingFlag");
+        }
+    }
+
+    private IEnumerator ResetClimbingFlag(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        climbingSoundPlaying = false;
+        currentClimbingSource = null;
     }
 }

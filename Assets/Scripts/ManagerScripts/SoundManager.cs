@@ -28,12 +28,23 @@ public class SoundFXManager : MonoBehaviour
         Destroy(audioSource.gameObject, clipLength);
     }
 
+    // Creates and returns an audio source without automatically destroying it
+    public AudioSource CreateAudioSource(AudioClip audioClip, Transform transform, float volume, float pitch)
+    {
+        AudioSource audioSource = Instantiate(soundFXObject, transform.position, Quaternion.identity);
+        audioSource.clip = audioClip;
+        audioSource.volume = 0.05f;
+        audioSource.pitch = pitch;
+        audioSource.Play();
+        return audioSource;
+    }
+
     // Use: SoundFXManager.Instance.PlayAudioClip(audioclip from object, transform (objects transform), 0f-1f, float);
     public void PlayAudioClipLoop(AudioClip audioClip, Transform transform, float volume, float pitch)
     {
         AudioSource audioSource = Instantiate(soundFXObject, transform.position, Quaternion.identity);
         audioSource.clip = audioClip;
-        audioSource.volume = volume * masterVolume;
+        audioSource.volume = 0.09f;
         audioSource.pitch = pitch;
         audioSource.loop = true;
         audioSource.Play();
@@ -58,7 +69,6 @@ public class SoundFXManager : MonoBehaviour
     public void PlayRandomAudioClip(AudioClip[] audioClip, Transform transform, float volume, float pitch)
     {
         int randArrayPos = Random.Range(0, audioClip.Length);
-
         AudioSource audioSource = Instantiate(soundFXObject, transform.position, Quaternion.identity);
         audioSource.clip = audioClip[randArrayPos];
         audioSource.volume = volume * masterVolume;
