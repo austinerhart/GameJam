@@ -104,22 +104,12 @@ public class PlayerManager : MonoBehaviour
 
         if (IsOnLadder())
         {
-            if (!sound_is_playing){
-                if (GetComponent<AudioSource>()){
-                    GetComponent<AudioSource>().Play();
-                }
-            }
             dir_y = local_direction.y * climb_speed;
             dir_x = local_direction.x * climb_speed;
 
             player_rb.gravityScale = 0f;
         } else
         {
-            if (sound_is_playing){
-                if (GetComponent<AudioSource>()){
-                    GetComponent<AudioSource>().Stop();
-                }
-            }
             player_rb.gravityScale = 5f;
         }
 
