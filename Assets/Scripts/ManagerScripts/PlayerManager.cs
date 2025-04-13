@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Player Settings")]
     [SerializeField] private GameObject player;
     [SerializeField] private Rigidbody2D player_rb;
-    [SerializeField] private BoxCollider2D player_collider;
+    [SerializeField] private CapsuleCollider2D player_collider;
     [SerializeField] private SpriteRenderer player_sprite;
     [SerializeField] private Animator player_animator;
 
@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour
         player_scale_x = player_collider.size.x;
         player_scale_y = player_collider.size.y;
         player_crouch_y = 0.3737239f;
-        player_crouch_offset = -0.2144155f;
+        player_crouch_offset = -0.2f;
         player_rb.freezeRotation = true;
         PlayerController = new PlayerInput();
     }
@@ -236,41 +236,48 @@ public class PlayerManager : MonoBehaviour
 
     private bool IsGrounded()
     {
-        float extra_height_test = 0.1f;
+        float extra_height_test = 0.6f;
 
-        RaycastHit2D raycast_hit = Physics2D.BoxCast(player_collider.bounds.center, player_collider.bounds.size, 0f, Vector2.down, extra_height_test, groundLayer);
+        Vector2 size = player_collider.size;
+        Vector2 direction = Vector2.down;
+        float distance = extra_height_test;
+
+        RaycastHit2D raycast_hit = Physics2D.CapsuleCast( player_collider.bounds.center, size, player_collider.direction, 0f, direction, distance, groundLayer);
 
         return raycast_hit.collider != null;
     }
 
     private bool IsWallLeft()
     {
-        float extra_length_test = 0.1f;
+        float extra_length_test = 0.35f;
 
-        Vector2 box_size = player_collider.bounds.size;
-        box_size.y = box_size.y * 0.9f;
-        RaycastHit2D raycast_left_hit = Physics2D.BoxCast(player_collider.bounds.center, box_size, 0f, Vector2.left, extra_length_test, groundLayer);
+        Vector2 size = player_collider.size;
+        size.y *= 0.95f;
+
+        RaycastHit2D raycast_left_hit = Physics2D.CapsuleCast(player_collider.bounds.center, size, player_collider.direction, 0f, Vector2.left, extra_length_test, groundLayer);
 
         return raycast_left_hit.collider != null;
     }
 
     private bool IsWallRight()
     {
-        float extra_length_test = 0.1f;
+        float extra_length_test = 0.35f;
 
-        Vector2 box_size = player_collider.bounds.size;
-        box_size.y = box_size.y * 0.9f;
-        RaycastHit2D raycast_left_hit = Physics2D.BoxCast(player_collider.bounds.center, box_size, 0f, Vector2.right, extra_length_test, groundLayer);
+        Vector2 size = player_collider.size;
+        size.y *= 0.95f;
 
-        return raycast_left_hit.collider != null;
+        RaycastHit2D raycast_right_hit = Physics2D.CapsuleCast(player_collider.bounds.center, size, player_collider.direction, 0f, Vector2.right, extra_length_test, groundLayer);
+
+        return raycast_right_hit.collider != null;
     }
 
     private bool IsOnLadder()
     {
-        float extra_length_test = 0.1f;
+        float extra_length_test = 0.15f;
 
-        RaycastHit2D ladder_left_hit = Physics2D.BoxCast(player_collider.bounds.center, player_collider.bounds.size, 0f, Vector2.left, extra_length_test, ladderLayer);
-        RaycastHit2D ladder_right_hit = Physics2D.BoxCast(player_collider.bounds.center, player_collider.bounds.size, 0f, Vector2.right, extra_length_test, ladderLayer);
+        RaycastHit2D ladder_left_hit = Physics2D.CapsuleCast(player_collider.bounds.center, player_collider.size, player_collider.direction, 0f, Vector2.left, extra_length_test, ladderLayer);
+
+        RaycastHit2D ladder_right_hit = Physics2D.CapsuleCast(player_collider.bounds.center, player_collider.size, player_collider.direction, 0f, Vector2.right, extra_length_test, ladderLayer);
 
         bool ladder_hit = ladder_left_hit.collider != null || ladder_right_hit.collider != null;
         return ladder_hit;
