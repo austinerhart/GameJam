@@ -13,6 +13,7 @@ public class Caught : MonoBehaviour
     public float fadeDuration = 1f;
     TextMeshProUGUI textElement;
     Transform textTransform;
+    public int timesCaught = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -47,21 +48,21 @@ public class Caught : MonoBehaviour
     IEnumerator gameOver(){
 
         // Freeze player
-            if (player != null)
-                Time.timeScale = 0f; 
-                MonoBehaviour[] scripts = player.GetComponents<MonoBehaviour>();
-                foreach (var script in scripts)
-                    script.enabled = false;
-                yield return new WaitForSecondsRealtime(1f);
-                yield return StartCoroutine(FadeOutWhileFrozen());
-                yield return StartCoroutine(FadeTextIn());
-                yield return new WaitForSecondsRealtime(1f);
-                player.transform.position = spawnPoint.transform.position;
-                yield return StartCoroutine(FadeTextOut());
-                yield return StartCoroutine(FadeInWhileFrozen());
-                Time.timeScale = 1f; 
-                foreach (var script in scripts)
-                    script.enabled = true;
+        if (player != null)
+            Time.timeScale = 0f; 
+            MonoBehaviour[] scripts = player.GetComponents<MonoBehaviour>();
+            foreach (var script in scripts)
+                script.enabled = false;
+            yield return new WaitForSecondsRealtime(1f);
+            yield return StartCoroutine(FadeOutWhileFrozen());
+            yield return StartCoroutine(FadeTextIn());
+            yield return new WaitForSecondsRealtime(1f);
+            player.transform.position = spawnPoint.transform.position;
+            yield return StartCoroutine(FadeTextOut());
+            yield return StartCoroutine(FadeInWhileFrozen());
+            Time.timeScale = 1f; 
+            foreach (var script in scripts)
+                script.enabled = true;
         PlayerManager.Instance.times_caught += 1;
     }
 

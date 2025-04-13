@@ -148,6 +148,8 @@ public class PlayerManager : MonoBehaviour
         {
             player_rb.velocity = new Vector2(player_rb.velocity.x, player_rb.velocity.y * 0.5f);
         }
+
+        player.GetComponent<GreyScript>().SetGreyscaleLevel(times_caught);
     }
 
     private void FixedUpdate()
