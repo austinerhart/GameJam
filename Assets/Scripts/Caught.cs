@@ -70,7 +70,7 @@ public class Caught : MonoBehaviour
     {
         float elapsed = 0f;
         Color startColor = new Color(0, 0, 0, 0);
-        Color endColor = new Color(0, 0, 0, 1);
+        Color endColor = new Color(1, 1, 1, 1);
 
         while (elapsed < fadeDuration)
         {
@@ -123,7 +123,7 @@ public class Caught : MonoBehaviour
     {
         float elapsed = 0f;
         Color startColor = new Color(0, 0, 0, 1);
-        Color endColor = new Color(0, 0, 0, 0);
+        Color endColor = new Color(1, 1, 1, 0);
 
         while (elapsed < fadeDuration)
         {

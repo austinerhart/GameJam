@@ -746,10 +746,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textHolder: {fileID: 914721554}
   sentences:
-  - I'm here to talk about the truth.
-  - What truth are you referring to?
-  - The fact that the war is over.
-  - And that it has been over since 50 years ago.
+  - 'Rebel: I''m here to talk about the truth.'
+  - 'Broadcaster: What truth are you referring to?'
+  - 'Rebel: The fact that the war is over.'
+  - 'Rebel: And that it has been over for years.'
+  - 'Broadcaster: Where is your proof?'
+  - 'Rebel: I am the proof.'
+  - 'Rebel: I fought in the war.'
+  - 'Rebel: I am from Oceania.'
+  - 'Boradcaster: Well that''s all the time w-'
+  - 'Rebel: For those of you who know I''m telling the truth.'
+  - 'Rebel: We shall meet in the place where there is no darkness.'
   textSpeed: 0.15
   continueButton: {fileID: 336131842}
   ding: {fileID: 8300000, guid: eafd965ec50e3794291e7cecdfe900d9, type: 3}
