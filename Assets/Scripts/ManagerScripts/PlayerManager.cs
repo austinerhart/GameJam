@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
+    public static PlayerManager Instance;
+    public int times_caught;
+
     [Header("Player Settings")]
     [SerializeField] private GameObject player;
     [SerializeField] private Rigidbody2D player_rb;
@@ -29,8 +32,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private AudioClip[] climbingSounds;
     [SerializeField] private float footstepInterval = 0.3f;
     [SerializeField] private float climbingInterval = 0.4f;
-    [SerializeField] private float footstepVolume = 0f;
-    [SerializeField] private float climbingVolume = 0f;
+    [SerializeField] private float footstepVolume = 0.05f;
+    [SerializeField] private float climbingVolume = 0.05f;
 
     // Private Variables
     private PlayerInput PlayerController;
@@ -57,6 +60,10 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         player_scale_x = player_collider.size.x;
         player_scale_y = player_collider.size.y;
         player_crouch_y = 0.3737239f;
@@ -280,8 +287,9 @@ public class PlayerManager : MonoBehaviour
             AudioClip selectedClip = footstepSounds[UnityEngine.Random.Range(0, footstepSounds.Length)];
 
             AudioSource audioSource = SoundFXManager.Instance.CreateAudioSource(selectedClip, transform, footstepVolume, randomPitch);
-            currentFootstepSource = audioSource;
 
+            currentFootstepSource = audioSource;
+            currentFootstepSource.volume = 0.05f;
             ResetFootstepFlag(selectedClip.length);
         }
     }
@@ -317,6 +325,7 @@ public class PlayerManager : MonoBehaviour
             AudioSource audioSource = SoundFXManager.Instance.CreateAudioSource(selectedClip, transform, climbingVolume, randomPitch);
             currentClimbingSource = audioSource;
 
+            currentClimbingSource.volume = 0.05f;
             ResetClimbingFlag(selectedClip.length);
         }
     }

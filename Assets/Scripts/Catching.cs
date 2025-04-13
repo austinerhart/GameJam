@@ -96,6 +96,7 @@ public class Catching : MonoBehaviour
                 Time.timeScale = 1f; 
                 foreach (var script in scripts)
                     script.enabled = true;
+            PlayerManager.Instance.times_caught += 1;
         }
     }
 

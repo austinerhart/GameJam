@@ -7,7 +7,8 @@ public class Caught : MonoBehaviour
 {
     public bool hidden;
     public GameObject spawnPoint;
-    public GameObject player; 
+    public GameObject player;
+    public GameObject player_manager;
     public Image fadePanel;
     public float fadeDuration = 1f;
     TextMeshProUGUI textElement;
@@ -61,6 +62,7 @@ public class Caught : MonoBehaviour
                 Time.timeScale = 1f; 
                 foreach (var script in scripts)
                     script.enabled = true;
+        PlayerManager.Instance.times_caught += 1;
     }
 
     IEnumerator FadeOutWhileFrozen()

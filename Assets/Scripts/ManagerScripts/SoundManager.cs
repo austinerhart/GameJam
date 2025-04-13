@@ -33,7 +33,7 @@ public class SoundFXManager : MonoBehaviour
     {
         AudioSource audioSource = Instantiate(soundFXObject, transform.position, Quaternion.identity);
         audioSource.clip = audioClip;
-        audioSource.volume = 0.05f;
+        audioSource.volume = volume;
         audioSource.pitch = pitch;
         audioSource.Play();
         return audioSource;
