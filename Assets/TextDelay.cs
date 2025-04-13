@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Runtime.CompilerServices;
+using UnityEngine.UIElements;
 
 public class TextDelay : MonoBehaviour
 {
@@ -12,11 +14,12 @@ public class TextDelay : MonoBehaviour
     public float textSpeed;
 
     public GameObject continueButton;
-    private AudioSource source;
+    public AudioClip ding;
+    AudioSource typing;
     // Start is called before the first frame update
     void Start()
     {
-        source = GetComponent<AudioSource>();
+       typing =  GetComponent<AudioSource>();
         StartCoroutine(Delay());
     }
 
@@ -36,11 +39,12 @@ public class TextDelay : MonoBehaviour
             textHolder.text += letter;
             yield return new WaitForSeconds(textSpeed);
         }
-        source.Stop();
+        typing.Stop();
+        SoundFXManager.Instance.PlayAudioClip(ding, transform, 1, 1);
     }
 
     public void NextSentence(){
-        source.Play();
+        typing.Play();
         if(index < sentences.Length - 1){
             index++;
             textHolder.text = "";
