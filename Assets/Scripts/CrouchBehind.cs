@@ -6,7 +6,7 @@ using UnityEngine;
 public class CrouchBehind : MonoBehaviour
 {
 
-    public Caught vision;
+    public Catching vision;
     public GameObject player;
     Renderer render;
     int oldLayer;
