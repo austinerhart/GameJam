@@ -33,13 +33,16 @@ public class Flicker : MonoBehaviour
     public IEnumerator OnAndOff(float stepDelay){
         yield return new WaitForSeconds(delay * stepDelay);
         vision.SetActive(false);
+        if (GetComponent<AudioSource>())
+            GetComponent<AudioSource>().Play();
         for (int i = 0; i < numFlickers; i++){
             yield return new WaitForSeconds(.1f);
             vision.SetActive(true);
             yield return new WaitForSeconds(.1f);
             vision.SetActive(false);
         }
-        
+        if (GetComponent<AudioSource>())
+            GetComponent<AudioSource>().Stop();
         yield return new WaitForSeconds(delay);
         vision.SetActive(true);
         

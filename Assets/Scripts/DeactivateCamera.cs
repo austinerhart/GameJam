@@ -36,6 +36,8 @@ public class DeactivateCamera : MonoBehaviour
                 if(leftSideRotate != null){
                     leftSideRotate.rotationSpeed = 0;
                 }
+                if (GetComponent<AudioSource>())
+                    GetComponent<AudioSource>().Play();
                 vision.SetActive(false);
                 StartCoroutine(Delay());
             }
@@ -43,6 +45,10 @@ public class DeactivateCamera : MonoBehaviour
     }
 
     public IEnumerator Delay(){
+        yield return new WaitForSeconds(0.5f);
+        GameObject camera = vision.transform.parent.gameObject;
+        if(camera.GetComponent<AudioSource>())
+            camera.GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(delay);
         if(rotate != null){
                     rotate.rotationSpeed = savedSpeed;
@@ -51,5 +57,7 @@ public class DeactivateCamera : MonoBehaviour
                     leftSideRotate.rotationSpeed = savedSpeed;
                 }
                 vision.SetActive(true);
+                if (vision.GetComponent<AudioSource>())
+                    vision.GetComponent<AudioSource>().Play();
     }
 }
