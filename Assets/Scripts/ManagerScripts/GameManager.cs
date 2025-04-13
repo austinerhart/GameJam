@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    // Start is called before the first frame update
+    [SerializeField] GameObject PauseMenu;
 
     private void Awake()
     {
@@ -20,9 +22,24 @@ public class GameManager : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (Time.timeScale == 0f)
+            {
+
+                PauseMenu.SetActive(false);
+                Time.timeScale = 1f;
+            }
+            else
+            {
+                PauseMenu.SetActive(true);
+                Time.timeScale = 0f;
+            }
+        }
+
         if(PlayerManager.Instance.times_caught == 5)
         {
             SceneManager.LoadScene("Lose");
