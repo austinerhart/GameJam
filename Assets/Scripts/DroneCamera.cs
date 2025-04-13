@@ -8,8 +8,8 @@ public class DroneCamera : MonoBehaviour
 {
     public GameObject drone;
     public Vector2 increment = new Vector2(1f, 0f);
-    public int leftbound;
-    public int rightbound;
+    public float leftbound;
+    public float rightbound;
     public bool left;
     // Start is called before the first frame update
     void Start()
