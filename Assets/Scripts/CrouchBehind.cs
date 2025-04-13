@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CrouchBehind : MonoBehaviour
@@ -8,12 +9,13 @@ public class CrouchBehind : MonoBehaviour
     public Caught vision;
     public GameObject player;
     Renderer render;
-    public int oldLayer;
+    int oldLayer;
     public int newLayer;
     void Start()
     {
         player = GameObject.Find("Player");
         render = player.GetComponent<Renderer>();
+        oldLayer = render.sortingOrder;
     }
 
     // Update is called once per frame
@@ -28,7 +30,7 @@ public class CrouchBehind : MonoBehaviour
                 vision.hidden = true;
                 render.sortingOrder = newLayer;
             }
-            if(Input.GetKey(KeyCode.W) ||  Input.GetKey(KeyCode.A)  || Input.GetKey(KeyCode.D)){
+            if(!Input.GetKey(KeyCode.S) && (Input.GetKey(KeyCode.W) ||  Input.GetKey(KeyCode.A)  || Input.GetKey(KeyCode.D))){
                 render.sortingOrder = oldLayer;
                 vision.hidden = false;
             }
