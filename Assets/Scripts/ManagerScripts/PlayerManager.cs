@@ -35,14 +35,16 @@ public class PlayerManager : MonoBehaviour
     private float player_scale_y;
     private float player_scale_z;
     private float player_crouch_y;
+    private float player_crouch_offset;
+    private bool isCrouching;
 
     private void Awake()
     {
 
-        player_scale_x = player.transform.localScale.x;
-        player_scale_y = player.transform.localScale.y;
-        player_scale_z = player.transform.localScale.z;
-        player_crouch_y = player.transform.localScale.y*0.5f;
+        player_scale_x = player_collider.size.x;
+        player_scale_y = player_collider.size.y;
+        player_crouch_y = 0.3737239f;
+        player_crouch_offset = -0.2144155f;
         player_rb.freezeRotation = true;
         PlayerController = new PlayerInput();
     }
@@ -63,6 +65,11 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
+        player_animator.SetBool("isClimbing", IsOnLadder());
+        player_animator.SetBool("isCrouching", isCrouching);
+        player_animator.SetBool("isJumping", (!IsGrounded() && !IsOnLadder()));
+        player_animator.SetFloat("xVelocity", Math.Abs(player_rb.velocity.x));
+        player_animator.SetFloat("yVelocity", player_rb.velocity.y);
 
         direction = movement.ReadValue<Vector2>();
 
@@ -153,18 +160,19 @@ public class PlayerManager : MonoBehaviour
         {
             if (!IsOnLadder() && IsGrounded())
             {
+                isCrouching = true;
                 dir_x = 0;
                 dir_y = 0;
-                player.transform.localScale = new Vector3(player_scale_x, player_crouch_y, player_scale_z);
+                player_collider.size = new Vector2(player_scale_x, player_crouch_y);
+                player_collider.offset = new Vector2(0.02f, player_crouch_offset);
             }
         } else
         {
-            player.transform.localScale = new Vector3(player_scale_x, player_scale_y, player_scale_z);
+            isCrouching = false;
+            player_collider.size = new Vector2(player_scale_x, player_scale_y);
+            player_collider.offset = new Vector2(0.02f, 0f);
         }
 
-        player_animator.SetBool("isJumping", !IsGrounded());
-        player_animator.SetFloat("xVelocity", Math.Abs(player_rb.velocity.x));
-        player_animator.SetFloat("yVelocity", player_rb.velocity.y);
         player_rb.velocity = new Vector2(dir_x, dir_y);
     }
 
