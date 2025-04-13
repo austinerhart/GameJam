@@ -20,14 +20,14 @@ public class Win : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision){
         if(collision.gameObject.CompareTag("Player")){
             if(Input.GetKey(KeyCode.E)){
-                SceneManager.LoadSceneAsync("VictoryScene");
+                SceneManager.LoadSceneAsync("VictoryScreen");
             }
         }
     }
     public void OnTriggerStay2D(Collider2D collision){
        if(collision.gameObject.CompareTag("Player")){
             if(Input.GetKey(KeyCode.E)){
-                SceneManager.LoadSceneAsync("VictoryScene");
+                SceneManager.LoadSceneAsync("VictoryScreen");
             }
         } 
     }
