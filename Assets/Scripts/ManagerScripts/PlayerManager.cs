@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private Rigidbody2D player_rb;
     [SerializeField] private BoxCollider2D player_collider;
+    [SerializeField] private SpriteRenderer player_sprite;
+    [SerializeField] private Animator player_animator;
 
     [Header("Speed Settings")]
     [SerializeField] private float move_speed = 10f;
@@ -60,6 +63,7 @@ public class PlayerManager : MonoBehaviour
 
     void Update()
     {
+
         direction = movement.ReadValue<Vector2>();
 
         if (IsGrounded())
@@ -110,6 +114,15 @@ public class PlayerManager : MonoBehaviour
 
         if (local_direction.x != 0)
         {
+
+            if(local_direction.x < 0)
+            {
+                player_sprite.flipX = true;
+            } else
+            {
+                player_sprite.flipX = false;
+            }
+
             dir_x = local_direction.x * move_speed;
         }
 
@@ -149,7 +162,10 @@ public class PlayerManager : MonoBehaviour
             player.transform.localScale = new Vector3(player_scale_x, player_scale_y, player_scale_z);
         }
 
-            player_rb.velocity = new Vector2(dir_x, dir_y);
+        player_animator.SetBool("isJumping", !IsGrounded());
+        player_animator.SetFloat("xVelocity", Math.Abs(player_rb.velocity.x));
+        player_animator.SetFloat("yVelocity", player_rb.velocity.y);
+        player_rb.velocity = new Vector2(dir_x, dir_y);
     }
 
     private bool IsGrounded()
@@ -192,5 +208,9 @@ public class PlayerManager : MonoBehaviour
 
         bool ladder_hit = ladder_left_hit.collider != null || ladder_right_hit.collider != null;
         return ladder_hit;
+    }
+
+    public void PlayFootstepSound()
+    {
     }
 }
