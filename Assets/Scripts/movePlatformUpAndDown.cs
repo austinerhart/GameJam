@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class VerticalPlatformMover : MonoBehaviour
 {
-    public float moveDistance = 2f;       // How far to move up and down
-    public float moveSpeed = 1f;          // Speed of movement
+    public float moveDistance;       // How far to move up and down
+    public float moveSpeed;          // Speed of movement
 
     private Vector3 startPosition;
 

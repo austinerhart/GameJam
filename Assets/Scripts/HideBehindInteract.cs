@@ -8,12 +8,13 @@ public class HideBehindInteract : MonoBehaviour
     public Caught vision;
     Renderer render;
     public GameObject player;
-    public int oldLayer;
+    int oldLayer;
     public int newLayer;
     void Start()
     {
         player = GameObject.Find("Player");
         render = player.GetComponent<Renderer>();
+        oldLayer = render.sortingOrder;
     }
 
     // Update is called once per frame
