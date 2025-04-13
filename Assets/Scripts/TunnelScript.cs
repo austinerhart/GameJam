@@ -24,7 +24,7 @@ public class TunnelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isTouchingTunnel && Input.GetKeyDown(KeyCode.S)){
+        if (isTouchingTunnel && Input.GetKeyDown(KeyCode.E)){
             Debug.Log("Tunnelling");
             StartCoroutine(Telaport());
             caught.hidden = true;
