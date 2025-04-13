@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine.UI;
 using System.Runtime.CompilerServices;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
 
 public class TextDelay : MonoBehaviour
 {
@@ -54,7 +53,6 @@ public class TextDelay : MonoBehaviour
         else{
             textHolder.text = "";
             continueButton.SetActive(false);
-            SceneManager.LoadScene("StartScreen");
         }
     }
 }
