@@ -14,7 +14,7 @@ public class HideBehindCatching : MonoBehaviour
     {
         player = GameObject.Find("Player");
         render = player.GetComponent<Renderer>();
-        oldLayer = render.sortingOrder;
+        oldLayer = 8;
     }
 
     // Update is called once per frame
