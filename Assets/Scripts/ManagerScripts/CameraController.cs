@@ -6,12 +6,13 @@ public class CameraController : MonoBehaviour
 {
     public GameObject player;
     public bool boundary;
+    public Vector3 cameraOffset = new Vector3(0f, 3.13f, -10f);
     // Update is called once per frame
     void Update()
     {
         if(!boundary){
         Vector3 playerPos = player.transform.position;
-        Vector3 cameraPos = playerPos + new Vector3(0f, 3.13f, -10f);
+        Vector3 cameraPos = playerPos + cameraOffset;
         transform.position = cameraPos;
         }
     }

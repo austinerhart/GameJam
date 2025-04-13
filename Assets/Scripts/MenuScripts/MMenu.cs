@@ -17,7 +17,7 @@ public class MMenu : MonoBehaviour
 
     public void PressedStart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("Level Design");
     }
 
     public void PressedSettings()

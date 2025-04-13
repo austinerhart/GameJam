@@ -8,12 +8,13 @@ public class Hidden : MonoBehaviour
     public GameObject player;
     Renderer render;
     public int newLayer;
-    public int oldLayer;
+    int oldLayer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         player = GameObject.Find("Player");
         render = player.GetComponent<Renderer>();
+        oldLayer = render.sortingOrder;
     }
 
     // Update is called once per frame
