@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 public class Hidden : MonoBehaviour
 {
-    public Caught vision;
+    public Catching vision;
     public GameObject player;
     Renderer render;
     public int newLayer;

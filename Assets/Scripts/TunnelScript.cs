@@ -10,7 +10,7 @@ public class TunnelScript : MonoBehaviour
     private Color originalColor;
     public GameObject player;
     public GameObject tunnelOpening; 
-    public Caught caught;
+    public Catching caught;
     public bool isTouchingTunnel;
     
     
