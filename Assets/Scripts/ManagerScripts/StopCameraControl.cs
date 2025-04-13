@@ -20,21 +20,21 @@ public class StopCameraControl : MonoBehaviour
     }
 
     public void OnTriggerEnter2D(Collider2D collision){
-        if(collision.gameObject.CompareTag("Player")){
+        if(collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("PlayerEnd")){
             Debug.Log("STOP");
             cameraController.boundary = true;
         }
     }
 
     public void OnTriggerStay2D(Collider2D collision){
-        if(collision.gameObject.CompareTag("Player")){
+        if(collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("PlayerEnd")){
             Debug.Log("STOP");
             cameraController.boundary = true;
         }
     }
 
     public void OnTriggerExit2D(Collider2D collision){
-        if(collision.gameObject.CompareTag("Player")){
+        if(collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("PlayerEnd")){
             cameraController.boundary = false;
         }
     }
